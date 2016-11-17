@@ -1,0 +1,19 @@
+{
+  "name": "mega-kino",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HDevel/mega-kino.git"
+  },
+  "author": "H.Devel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HDevel/mega-kino/issues"
+  },
+  "homepage": "https://github.com/HDevel/mega-kino#readme"
+}
