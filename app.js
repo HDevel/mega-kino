@@ -2,7 +2,9 @@ var http = require('http'),
     fs = require('fs'),
     mail = require('./mailer.js'),
     lastIdFile = '.current-last',
-    lastId;
+    lastId,
+    sec = 1000,
+    min = sec * 60;
 
 if (fs.existsSync(lastIdFile)) {
     lastId = Number(fs.readFileSync(lastIdFile));
@@ -44,7 +46,9 @@ function getFilm(filmId) {
             } else {
                 fs.writeFileSync(lastIdFile, filmId);
 
-                console.log('last one')
+                setTimeout(function() {
+                    getFilm(filmId);
+                }, Math.random() * min * 30);
             }
         });
     }).on('error', function(e) {
