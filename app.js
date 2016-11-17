@@ -1,4 +1,14 @@
-var http = require('http');
+var http = require('http'),
+    fs = require('fs'),
+    lastIdFile = '.current-last',
+    lastId;
+
+if (fs.existsSync(lastIdFile)) {
+    lastId = Number(fs.readFileSync(lastIdFile));
+} else {
+    console.log('Please create "' + lastIdFile + '" file with film id (145141 for example)');
+    return
+}
 
 function getFilm(filmId) {
     var options = {
@@ -20,6 +30,7 @@ function getFilm(filmId) {
 
                 getFilm(filmId + 1);
             } else {
+                fs.writeFileSync(lastIdFile, filmId);
                 console.log('last one')
             }
         });
@@ -28,4 +39,5 @@ function getFilm(filmId) {
     });
 }
 
-getFilm(145140);
+getFilm(lastId);
+
