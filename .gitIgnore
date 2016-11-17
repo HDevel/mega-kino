@@ -1,2 +1,5 @@
 .idea
 node_modules
+
+.current-last
+mail-config.js

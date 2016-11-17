@@ -1,5 +1,6 @@
 var http = require('http'),
     fs = require('fs'),
+    mail = require('./mailer.js'),
     lastIdFile = '.current-last',
     lastId;
 
@@ -23,14 +24,26 @@ function getFilm(filmId) {
             data += chunk;
         });
         res.on("end", function() {
-            var regExp = data.match(/Сеанс.+ (VIP|Зал [0-9])/);
+            var raw = data.match(/Сеанс.+ (VIP|Зал [0-9])/);
 
-            if (regExp) {
-                console.log(regExp && regExp[0]);
+            if (raw) {
+                var sliceName = raw[0].split('"'),
+                    dates = sliceName[2].split(' ');
+
+                var info = {
+                    name: sliceName[1],
+                    date: dates[1],
+                    day: dates[2],
+                    time: dates[3],
+                    room: dates[5] || dates[4]
+                };
+
+                mail(info);
 
                 getFilm(filmId + 1);
             } else {
                 fs.writeFileSync(lastIdFile, filmId);
+
                 console.log('last one')
             }
         });
@@ -40,4 +53,3 @@ function getFilm(filmId) {
 }
 
 getFilm(lastId);
-
