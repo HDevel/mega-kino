@@ -1,21 +1,21 @@
 var nodemailer = require('nodemailer'),
     config = require('./mail-config.js');
 
-module.exports = function(filmInfo) {
+module.exports = function(movies) {
     var transporter = nodemailer.createTransport(config.smtps);
 
     config.mails.forEach(function(mail) {
         var mailOptions = {
-            from: '"🎞" <mega-kino-watcher@ya.ru>',
+            from: '"🎞 Свежие фильмы 🎞" <' + config.mail + '>',
             to: mail,
-            subject: filmInfo.name,
-            html: 'Дата: <b>' + filmInfo.date + ' (' + filmInfo.day + ')</b><br />' +
-            'Время: <b>' + filmInfo.time + '</b><br />' +
-            'Зал: <b>' + filmInfo.room + '</b><br />'
+            subject: 'Кинотеатр Мультиплекс',
+            html: movies.map(function(v) {
+                return v.replace('"', '<b>&quot;').replace('"', '&quot;</b>')
+            }).join('<br />')
         };
 
-        transporter.sendMail(mailOptions, function(error, info){
-            if(error){
+        transporter.sendMail(mailOptions, function(error, info) {
+            if (error) {
                 return console.log(error);
             }
         });

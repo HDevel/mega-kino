@@ -4,7 +4,8 @@ var http = require('http'),
     lastIdFile = '.current-last',
     lastId,
     sec = 1000,
-    min = sec * 60;
+    min = sec * 60,
+    movieList = [];
 
 if (fs.existsSync(lastIdFile)) {
     lastId = Number(fs.readFileSync(lastIdFile));
@@ -29,21 +30,15 @@ function getFilm(filmId) {
             var raw = data.match(/Сеанс.+ (VIP|Зал [0-9])/);
 
             if (raw) {
-                var sliceName = raw[0].split('"'),
-                    dates = sliceName[2].split(' ');
-
-                var info = {
-                    name: sliceName[1],
-                    date: dates[1],
-                    day: dates[2],
-                    time: dates[3],
-                    room: dates[5] || dates[4]
-                };
-
-                mail(info);
+                movieList.push(raw[0]);
 
                 getFilm(filmId + 1);
             } else {
+                if (movieList.length) {
+                    mail(movieList);
+                    movieList = [];
+                }
+
                 fs.writeFileSync(lastIdFile, filmId);
 
                 setTimeout(function() {
