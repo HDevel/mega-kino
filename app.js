@@ -30,7 +30,10 @@ function getFilm(filmId) {
             var raw = data.match(/Сеанс.+ (VIP|Зал [0-9])/);
 
             if (raw) {
-                movieList.push(raw[0]);
+                movieList.push({
+                    text: raw[0],
+                    url: 'http://meganomkino.ru/book/' + filmId
+                });
 
                 getFilm(filmId + 1);
             } else {

@@ -9,9 +9,13 @@ module.exports = function(movies) {
             from: '"🎞 Свежие фильмы 🎞" <' + config.mail + '>',
             to: mail,
             subject: 'Кинотеатр Мультиплекс',
-            html: movies.map(function(v) {
-                return v.replace('"', '<b>&quot;').replace('"', '&quot;</b>')
-            }).join('<br />')
+            html: '<ul>' +
+                movies.map(function(v) {
+                    var split = v.text.split('"');
+
+                    return '<li><a href="' + v.url + '"><b>"' + split[1] + '"</b></a>' + split[2]  + '</li>';
+                }).join('<br />') +
+            '</ul>'
         };
 
         transporter.sendMail(mailOptions, function(error, info) {
