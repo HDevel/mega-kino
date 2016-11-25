@@ -23,6 +23,8 @@ function getFilm(filmId) {
         data = '';
 
     http.get(options, function(res) {
+        res.setEncoding('utf8');
+
         res.on("data", function(chunk) {
             data += chunk;
         });
