@@ -3,3 +3,4 @@ node_modules
 
 .current-last
 mail-config.js
+logs/

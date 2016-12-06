@@ -15,6 +15,7 @@ if (fs.existsSync(lastIdFile)) {
 }
 
 function getFilm(filmId) {
+    console.log(new Date() + ' - getFilm');
     var options = {
             host: 'meganomkino.ru',
             port: 80,
@@ -32,6 +33,7 @@ function getFilm(filmId) {
             var raw = data.match(/Сеанс.+ (VIP|Зал [0-9])/);
 
             if (raw) {
+                console.log(new Date() + ' - Фильм есть');
                 movieList.push({
                     text: raw[0],
                     url: 'http://meganomkino.ru/book/' + filmId
@@ -39,7 +41,9 @@ function getFilm(filmId) {
 
                 getFilm(filmId + 1);
             } else {
+                console.log(new Date() + ' - Фильмa нет');
                 if (movieList.length) {
+                    console.log(new Date() + ' - Отправляю почту');
                     mail(movieList);
                     movieList = [];
                 }
@@ -48,7 +52,7 @@ function getFilm(filmId) {
 
                 setTimeout(function() {
                     getFilm(filmId);
-                }, Math.random() * min * 30);
+                }, Math.round(Math.random() * min * 30));
             }
         });
     }).on('error', function(e) {
