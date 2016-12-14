@@ -58,4 +58,6 @@ function getFilm(filmId) {
     });
 }
 
-getFilm(lastId);
+setTimeout(function() {
+    getFilm(lastId);
+}, Math.random() * min * 7);
