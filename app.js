@@ -54,7 +54,7 @@ function getFilm(filmId) {
             }
         });
     }).on('error', function(e) {
-
+        console.log(new Date() + ' - error');
     });
 }
 
