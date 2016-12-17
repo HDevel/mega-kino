@@ -14,6 +14,8 @@ if (fs.existsSync(lastIdFile)) {
     return
 }
 
+console.log(new Date() + ' - id: ' + lastId);
+
 function getFilm(filmId) {
     console.log(new Date() + ' - getFilm');
     var options = {
