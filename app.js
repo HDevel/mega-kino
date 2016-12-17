@@ -50,7 +50,9 @@ function getFilm(filmId) {
 
                 fs.writeFileSync(lastIdFile, filmId);
 
-                process.exit();
+                setTimeout(function() {
+                    process.exit();
+                }, min);
             }
         });
     }).on('error', function(e) {
