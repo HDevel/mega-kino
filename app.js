@@ -5,7 +5,8 @@ var http = require('http'),
     lastId,
     sec = 1000,
     min = sec * 60,
-    movieList = [];
+    movieList = [],
+    retries = 5;
 
 if (fs.existsSync(lastIdFile)) {
     lastId = Number(fs.readFileSync(lastIdFile));
@@ -58,7 +59,18 @@ function getFilm(filmId) {
             }
         });
     }).on('error', function(e) {
-        console.log(new Date() + ' - error');
+        console.log(new Date() + ' - error (retry: ' + retries + ')');
+        console.log(e);
+
+        if (retries > 0) {
+            retries--;
+
+            getFilm(filmId);
+        } else {
+            setTimeout(function() {
+                process.exit();
+            }, min);
+        }
     });
 }
 
