@@ -2,11 +2,17 @@ var http = require('http'),
     fs = require('fs'),
     mail = require('./mailer.js'),
     lastIdFile = '.current-last',
+    runningFile = './logs/mega.log',
     lastId,
     sec = 1000,
     min = sec * 60,
     movieList = [],
     retries = 5;
+
+if (fs.existsSync(runningFile)) {
+    console.log('Another process is running');
+    return
+}
 
 if (fs.existsSync(lastIdFile)) {
     lastId = Number(fs.readFileSync(lastIdFile));
