@@ -9,7 +9,7 @@ var http = require('http'),
     movieList = [],
     retries = 5;
 
-if (fs.existsSync(runningFile)) {
+if (fs.existsSync(runningFile) && fs.readFileSync(runningFile).toString() !== '') {
     console.log('Another process is running');
     return
 }
