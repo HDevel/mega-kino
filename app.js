@@ -39,7 +39,8 @@ function getFilm(filmId) {
             data += chunk;
         });
         res.on("end", function() {
-            var raw = data.match(/Сеанс.+ (VIP|Зал [0-9])/);
+            var raw = data.match(/Сеанс.+ (VIP|Зал [0-9])/),
+                log;
 
             if (raw) {
                 console.log(new Date() + ' - Фильм есть');
@@ -55,6 +56,12 @@ function getFilm(filmId) {
                     console.log(new Date() + ' - Отправляю почту');
                     mail(movieList);
                     movieList = [];
+                }
+
+                log = fs.readFileSync(runningFile).toString();
+
+                if(log.split('\n').length === 4 && log.match(/Фильмa нет\n$/)) {
+                    fs.unlink(runningFile);
                 }
 
                 fs.writeFileSync(lastIdFile, filmId);
