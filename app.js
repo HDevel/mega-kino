@@ -68,7 +68,7 @@ function getFilm(filmId) {
 
                 setTimeout(function() {
                     process.exit();
-                }, min);
+                }, sec * 5);
             }
         });
     }).on('error', function(e) {
@@ -80,13 +80,11 @@ function getFilm(filmId) {
 
             getFilm(filmId);
         } else {
-            setTimeout(function() {
-                process.exit();
-            }, min);
+            process.exit();
         }
     });
 }
 
 setTimeout(function() {
     getFilm(lastId);
-}, Math.random() * min * 7);
+}, Math.random() * min);
