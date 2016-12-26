@@ -52,23 +52,22 @@ function getFilm(filmId) {
                 getFilm(filmId + 1);
             } else {
                 console.log(new Date() + ' - Фильмa нет');
+
                 if (movieList.length) {
                     console.log(new Date() + ' - Отправляю почту');
-                    mail(movieList);
+
+                    mail(movieList, function() {
+                        fs.writeFileSync(lastIdFile, filmId);
+
+                        process.exit();
+                    });
+
                     movieList = [];
-                }
+                } else {
+                    fs.unlinkSync(runningFile);
 
-                log = fs.readFileSync(runningFile).toString();
-
-                if(log.split('\n').length === 4 && log.match(/Фильмa нет\n$/)) {
-                    fs.unlink(runningFile);
-                }
-
-                fs.writeFileSync(lastIdFile, filmId);
-
-                setTimeout(function() {
                     process.exit();
-                }, sec * 5);
+                }
             }
         });
     }).on('error', function(e) {

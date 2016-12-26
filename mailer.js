@@ -1,11 +1,12 @@
 var nodemailer = require('nodemailer'),
     config = require('./mail-config.js');
 
-module.exports = function(movies) {
+module.exports = function(movies, callback) {
     var transporter = nodemailer.createTransport(config.smtps),
         html = '',
         titlesHash = {},
-        titles = [];
+        titles = [],
+        mails = config.mails.length;
 
     movies = movies
         .sort(function(a, b) {
@@ -37,6 +38,11 @@ module.exports = function(movies) {
         transporter.sendMail(mailOptions, function(error, info) {
             if (error) {
                 return console.log(error);
+            } else {
+                mails--;
+                if (mails === 0) {
+                    callback();
+                }
             }
         });
     });
